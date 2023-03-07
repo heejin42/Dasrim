@@ -1,0 +1,250 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dasrim - consult</title>
+        <script src="https://kit.fontawesome.com/d94daef18d.js" crossorigin="anonymous"></script>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href='{% static "css/consult.css" %}' rel="stylesheet" />
+        <link href='{% static "css/styles.css" %}' rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+</head>
+<body class="style2">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="{%url 'home' %}"><i class="fab fa-atlassian"></i></a>
+            <ul class="navbar-nav text-uppercase ml-auto">
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#services">Services</a></li>
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">DAS 소개</a></li>
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Chatbot 엘리</a></li>
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#team">Team</a></li>
+            </ul>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars ml-1"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger">Hello, {{user.get_username}}!</a></li>
+                    <li class="nav-item"><a class="nav-link nav-add js-scroll-trigger" href="{%url 'mypage' user.pk %}">mypage</a></li>
+                    <li class="nav-item"><a class="nav-link nav-add js-scroll-trigger" href="{%url 'logout' %}">logout</a></li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link nav-add js-scroll-trigger" href="{%url 'signup' %}">Sign up</a></li>
+                    <li class="nav-item"><a class="nav-link nav-add js-scroll-trigger" href="{%url 'login' %}">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--main-->
+    <main class="mainpadding">
+        <div class="chatting">
+            <div class="chatting_top">
+                <div class="header">
+                    <div class="header__header-column">
+                        <a href="{% url 'explain' user.pk %}" class="header__back-btn">
+                            <i class="fas fa-arrow-left "></i>
+                        </a>
+                        <h1 class="chat__timestamp">{{myrecord.created_date}}</h1>
+                    </div>
+                    <div class="header__header-column">
+                        <h1 class="chat__timestamp">{{myrecord.count}}회차</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="group">
+                <div class="chatting_center_container">
+                    <div class="chatting_left">
+                        <div class="img">
+                            <img class='img_gif' id='gif' src='{% static "img/elly.gif" %}'>
+                            <div class="img2">
+                                <img class='img_png' id='png' src='{% static "img/elly.png" %}'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chatting_right">
+                        <div id="chatLog">
+                            {% for i in ment %}
+                            <div class="anotherMsg">
+                                <span class="anotherName">엘리</span>
+                                <span class="msg">{{ i }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="chatting_bottom">
+                    <div id="chatForm">
+                        <input type="text" autocomplete="off" size="18" id="message" placeholder="메시지를 입력하세요" onkeyup="enterkey()">
+                        <button class = "btn_white" type='submit' onclick="user_chat()">보내기</button>
+                    </div>
+                    <script type="text/javascript">
+                        var arr = [];
+                        var index = -2;
+                        var user = '{{users.nickname}}';
+                        var first = true;
+
+                        function enterkey() {
+                                if (window.event.keyCode == 13) {
+                                    // 엔터키가 눌렸을 때 실행할 내용
+                                    user_chat();
+                                }
+                        }
+
+                        function bot_content(text){
+                            $("#chatLog").append('<div class="anotherMsg">'+
+                                    '<span class="anotherName">'+
+                                        '엘리' +
+                                    '</span>' +
+                                    '<span class="msg">'+
+                                            text  +
+                                    '</span>' +
+                            '</div>' )
+                            $('#chatLog').animate({
+                            scrollTop: $('#chatLog').get(0).scrollHeight
+                            }, 100);
+                            
+                        }
+
+                        function user_content(text){
+                        $("#chatLog").append('<div class="myMsg">'+
+                                        '<span class="msg">'+
+                                            text +
+                                        '</span>' +
+                                    '</div>' )
+                        $('#chatLog').animate({
+                        scrollTop: $('#chatLog').get(0).scrollHeight
+                        }, 100);
+                            
+                        }
+
+                        
+
+                        function user_chat() {
+                            
+                            
+                            user_content($('#message').val());
+                            index++;
+
+                            document.getElementById("gif").style.display = "block";
+                            document.getElementById("png").style.display = "none";
+
+                            
+
+                            $("#chatLog").append('<div id="temp">'+
+                                    '<span class="anotherName">'+
+                                        '엘리' +
+                                    '</span>' +
+                                    '<span class="msg">'+
+                                    '<img class="temp2" src="'+
+                                    "{% static 'img/loading.gif' %}"+
+                                    '">'+
+                                    '</img>'+
+                                    '</span>' +
+                            '</div>' )
+                            $('#chatLog').animate({
+                            scrollTop: $('#chatLog').get(0).scrollHeight
+                            }, 100);
+
+
+                            $.ajax({
+                                type:'POST',
+                                url:'http://192.168.0.163:5001/generateQ',
+                                data:{
+                                    text1:$('#message').val(),
+                                    user:'{{users.nickname}}',
+                                    user_count:{{myrecord.count}},
+                                    idx:index
+                                },
+                                success:function(json){
+                                    if(first){
+                                        $("#temp").remove();
+                                        document.getElementById("message").value='';
+                                        bot_content('{{ment_final}}');
+                                        first=false;
+                                        document.getElementById("gif").style.display = "none";
+                                        document.getElementById("png").style.display = "block";
+                                    }else{
+
+                                        arr = json.bot_Q;
+                                        $("#temp").remove();
+                                        console.log("data pass",json.bot_Q);
+                                        console.log("index : ",index);
+                                        console.log("arr : ",arr);
+                    
+                                        document.getElementById("message").value='';
+
+                                        if (json.end_talk==='end_talk'){
+                                            document.getElementById("chatForm").style.display = "none";
+                                        }
+                                        
+                                        document.getElementById("gif").style.display = "none";
+                                        document.getElementById("png").style.display = "block";
+                                        for ( var i = 0; i < arr.length; i++) { 
+                                        bot_content(arr[i])
+                                        }
+
+                                     
+
+                                        {% comment %} 질문이 끝날 때 입력창 없애고, 받은 유저 데이터 view로 보냄{% endcomment %}
+                                        if (json.talk_finish === 'finish'){
+                                            console.log("json.data : ",json.user_data);
+                                            document.getElementById("chatForm").style.display = "none";
+                                                $.ajax({
+                                                    type:'POST',
+                                                    url:'{% url "consult" user.pk %}',
+                                                    data:{
+                                                        user_data:json.user_data,
+                                                    },
+                                                    success:function(json){
+                                                        console.log("to view data pass success");
+                                                        
+                                                    },
+                                                    error : function(xhr,errmsg,err) {
+                                                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                                                    }
+                                                    });
+
+                                                $("#chatLog").append('<div class="anotherMsg">'+
+                                                            '<span class="anotherName">'+
+                                                                '엘리' +
+                                                            '</span>' +
+                                                            '<span class="msg">'+
+                                                            '<a class="btn btn-primary btn-xl" id="sendMessageButton" href="'+
+                                                            "{%url 'record' user.pk %}"+ 
+                                                            '"><h3>'+
+                                                            '>> 자동적 사고 기록하러 가기<<' +
+                                                            '</h3>'+
+                                                            '</a>'+
+                                                            '</span>' +
+                                                    '</div>' )
+                                                $('#chatLog').animate({
+                                                scrollTop: $('#chatLog').get(0).scrollHeight
+                                                }, 100);
+                                        }
+
+                                    }
+                                        
+                                },
+                                error : function(xhr,errmsg,err) {
+                                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                                }
+                                });
+
+                                    
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

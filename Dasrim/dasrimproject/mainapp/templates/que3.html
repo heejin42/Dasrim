@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dasrim - question3</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href='{% static "css/styles2.css" %}' rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+    <body>
+        <section class="page-section portfolio" id="portfolio">
+            <div class="container-fluid">
+                <!-- Portfolio Section Heading-->
+                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">마지막 질문입니다!</h2>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <h2 class="page-section-heading text-center text-uppercase text-secondary-1 mb-0" style="color:ffcc00">5 / 5</h2>
+                    <div class="divider-custom-line"></div>
+                </div>
+
+                <form action="{%url 'result' user.pk data.pk %}" method='POST'>
+                    {% csrf_token %}
+                    <div class="row justify-content-center mb-5"><img class="my-img" src="{{data.image.url}}" alt="{{data.image.url}}" style='border: solid'></div>
+                    <div class="row justify-content-center mb-00"><h4 class="text-center">Q. 이 그림을 그릴 때 어떤 기분이 들었나요?</h4></div>
+                    <div class="row justify-content-center mb-00 font-weight-bold">
+                        <ul style="list-style-type:none; padding:0; margin:0;">
+                            <li><input type="radio" name="feeling" value=1 onclick="javascript:check_only(this)">매우 우울함</li>
+                            <li><input type="radio" name="feeling" value=1 onclick="javascript:check_only(this)">다소 우울함</li>
+                            <li><input type="radio" name="feeling" value=1 onclick="javascript:check_only(this)">보통</li>
+                            <li><input type="radio" name="feeling" value=1 onclick="javascript:check_only(this)">다소 행복함</li>
+                            <li><input type="radio" name="feeling" value=1 onclick="javascript:check_only(this)">매우 행복함</li>
+                        </ul>
+                    </div>
+                    <div class="btns">
+                        <a class="btn btn-primary btn-xl" id="sendMessageButton" href="{%url 'que2' user.pk data.pk %}">이전으로</a>
+                        <button class="btn btn-primary btn-xl" id="sendMessageButton2" type="submit">다음으로</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Contact form JS-->
+        <script src='{% static "assets/mail/jqBootstrapValidation.js" %}'></script>
+        <script src='{% static "assets/mail/contact_me.js" %}'></script>
+        <!-- Core theme JS-->
+        <script src='{% static "js/scripts.js" %}'></script>
+
+
+        <script>
+            $(function () {
+                var sendMessageButton2 = document.querySelector("#sendMessageButton2");
+
+                sendMessageButton2.addEventListener(
+                    "click", function () {
+                        sendMessageButton2.innerHTML = "Loading...";
+
+                        setTimeout(function () {
+                            sendMessageButton2.innerHTML = "다음으로";
+                        }, 10000);
+                    },
+                    false
+                );
+            });
+        </script>
+    </body>
+</html>

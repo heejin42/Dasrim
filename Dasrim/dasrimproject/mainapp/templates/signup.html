@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Dasrim - Signup</title>
+    <link rel="icon" type="image/x-icon" href='{% static "assets/img/favicon.ico" %}' />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS-->
+    <link href='{% static "signup.css" %}' rel="stylesheet" />
+</head>
+<body>
+    <div class="page">
+        <div class="container">
+          <!-- left -->
+          <div class="left">
+            <div class="login">Sign up</div>
+          </div>
+          <!-- right -->
+          <div class="right">
+            <form action="{% url 'signup' %}" method='POST'>
+              {% csrf_token %}
+              <div class="form">
+                <label for="user_id">아이디</label>
+                <input name="user_id" type="text">
+                <label for="user_pw">비밀번호</label>
+                <input name="user_pw" type="password">
+                <label for="user_pw_check">비밀번호</label>
+                <input name="user_pw_check" type="password">
+                <label for="name">이름</label>
+                <input name="name" type="text">
+                <label for="nickname">닉네임</label>
+                <input name="nickname" type="text"> 
+                <label for="email">이메일</label>
+                <input name="email" type="email">
+                <label for="gender">성별</label>
+                <input name="gender" type="text">
+                <label for="age">나이</label>
+                <input name="age" type="text"> 
+                <button type="submit" id="submit">회원가입</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+</body>
+</html>

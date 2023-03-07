@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>   
+        {% load static %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Dasrim - record</title>
+        <link rel="icon" type="image/x-icon" href='{% static "assets/img/favicon.ico" %}' />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href='{% static "mypage.css" %}' rel="stylesheet" />
+        <script src="https://kit.fontawesome.com/d94daef18d.js" crossorigin="anonymous"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script>
+            $(function () {
+                $(".belief").hide();
+                $("#openBtn").click(function(){
+                    $(".belief").toggle(600);
+                });
+            });
+        </script>
+    </head>
+    <body id="page-top" onload='on_load()'>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <a class="navbar-brand js-scroll-trigger" href="{% url 'home' %}"><i class="fab fa-atlassian"></i></a>
+                <ul class="navbar-nav text-uppercase ml-auto">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{%url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{%url 'service' user.pk %}">Services</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{%url 'diagnosis' user.pk %}">DAS 소개</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="{%url 'explain' user.pk %}">Chatbot 엘리</a></li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars ml-1"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav text-uppercase ml-auto">
+                        <!-- 회원가입/로그인 -->
+                        {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger">Hello, {{user.get_username}}!</a></li>
+                        <li class="nav-item"><a class="nav-link nav-add js-scroll-trigger" href="{%url 'mypage' user.pk %}">mypage</a></li>
+                        <li class="nav-item"><a class="nav-link nav-add js-scroll-trigger" href="{%url 'logout' %}">logout</a></li>
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link nav-add js-scroll-trigger" href="{%url 'signup' %}">Sign up</a></li>
+                        <li class="nav-item"><a class="nav-link nav-add js-scroll-trigger" href="{%url 'login' %}">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Masthead-->
+        <header class="masthead">
+            <div class="container-0">
+                <h3>마이페이지</h3>
+                <p><b>{{myaccount.name}}</b>님, 안녕하세요!</p>
+            </div>
+            <div class="padding">
+                <div class="my_container">
+                    <div class="my_left">
+                        <div class = "col-md-41">
+                            <div>
+                                <div class="info">닉네임: {{user}}</div>
+                                <div class="info">이메일: {{myaccount.email}}</div>
+                                <div class="info">성별: {{myaccount.gender}}</div>
+                                <div class="info">나이: {{myaccount.age}}</div>
+                            </div>
+                            <button class="mybutton">내 정보 수정하기</button>
+                        </div>
+                        <div class = "col-md-41">
+                            <h4>자동적사고 기록지</h4>
+                            <button class="mybutton"><a href="{%url 'record' user.pk %}">확인하기</a></button>
+                        </div>
+                    </div>
+    
+                    <div class ="my_right">
+                        <div class = "col-md-42">
+    
+                            <img src="../{{path}}" alt="{{path}}" width='500'>
+
+                            <div class="openBtn_container">
+
+                            </div>
+                            
+                            
+                            {% for detail_dia in mydia %}
+                            <div class="das_info" id="{{detail_dia.pk}}">
+                                <h5 class="detail-head">상세정보</h5>
+                                <div class="detail-1">
+                                    <img src="{{detail_dia.image.url}}" alt="{{detail_dia.image.url}}" width='100' style='border: solid'>
+                                </div>
+                                <div class="detail">정서점수: {{detail_dia.score1}}</div>
+                                <div class="detail">자아상점수: {{detail_dia.score2}}</div>
+                                <div class="detail">자기보고점수: {{detail_dia.score3}}</div>
+                                <div class="detail" style="font-weight: bolder;" >총점: {{detail_dia.total_score}}</div><br>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Services-->
+        <!-- Footer-->
+        <footer class="footer py-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 text-lg-left">Copyright © Dasrim 2020</div>
+                    <div class="col-lg-4 text-lg-right">
+                        <a class="mr-3" href="#!">Privacy Policy</a>
+                        <a href="#!">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Portfolio Modals-->
+        
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Contact form JS-->
+        <script src='{% static "assets/mail/jqBootstrapValidation.js" %}' ></script>
+        <script src='{% static "assets/mail/contact_me.js" %}'></script>
+        <!-- Core theme JS-->
+        <script src='{% static "js/scripts.js" %}'></script>
+        
+        <script type='text/javascript'>
+            function on_load (){
+
+            {%for dia in mydia %}
+            $(".openBtn_container").append(
+                '<button id="openBtn" class = '+'{{dia.pk}}'+' onclick = "disappear('+"'{{dia.pk}}'"+')">"{{dia.created_date}}"</button>'
+            )
+            
+            {% endfor %}
+            }
+            function disappear(pk_value){
+                if(document.getElementById(pk_value).style.display = "none"){
+                    document.getElementById(pk_value).style.display = "block";
+                }else {
+                    document.getElementById(pk_value).style.display = "none";
+                }
+            }
+
+        </script>
+    </body>
+</html>
